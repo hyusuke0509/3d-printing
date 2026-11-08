@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>PIPPI STUDIO | 3Dプリント造形サービス</title>
   <meta name="description" content="PIPPI STUDIO：試作品・部品・フィギュア・オリジナルグッズなど、3Dプリンターによる造形を1点から承ります。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,14 +35,11 @@
       overflow-x: hidden;
     }
     a { color: inherit; }
+    svg { display: block; }
     .en { font-family: "Bangers", "Dela Gothic One", sans-serif; letter-spacing: .05em; font-weight: 400; }
-    .jp { font-family: "Dela Gothic One", sans-serif; font-weight: 400; }
 
     /* ===== ヘッダー ===== */
-    header {
-      background: var(--yellow);
-      border-bottom: var(--border);
-    }
+    header { background: var(--yellow); border-bottom: var(--border); flex: none; }
     header .bar {
       max-width: 1400px; margin: 0 auto; padding: 0 20px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 54px;
@@ -52,7 +49,7 @@
     .tag { background: var(--ink); color: var(--yellow); padding: 0 10px; font-size: 16px; margin-left: 12px; vertical-align: 4px; }
     .head-mail { font-weight: 800; font-size: 14px; text-decoration: none; background: var(--red); color: var(--white); padding: 4px 12px; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
 
-    /* ===== コマ割りレイアウト ===== */
+    /* ===== コマ割りレイアウト（PC） ===== */
     .page {
       max-width: 1400px; margin: 0 auto; padding: 18px 20px 24px;
       display: grid; gap: 18px;
@@ -64,39 +61,21 @@
     }
     .box { background: var(--white); border: var(--border); box-shadow: var(--shadow); padding: 16px 18px; }
     .col1  { grid-area: col1; display: flex; flex-direction: column; gap: 18px; min-height: 0; }
-    .hero  { grid-area: hero; flex: 1; }
-    .price { grid-area: price; }
+    .hero  { flex: 1; min-height: 0; }
     .svc   { grid-area: svc; }
     .flow  { grid-area: flow; }
     .form-panel { grid-area: form; }
+    .tabs, .swipe-hint { display: none; }
 
-    /* 1画面に収める（PC） */
     @media (min-width: 1100px) {
       body { height: 100vh; display: flex; flex-direction: column; }
-      .page { flex: 1; min-height: 0; width: 100%; max-height: 760px; margin: auto; }
+      .page { flex: 1; min-height: 0; width: 100%; max-height: 780px; margin: auto; }
       .svc .cells { align-content: center; }
     }
     @media (min-width: 1100px) and (max-height: 780px) {
       .caption-box { display: none; }
       .page { padding-top: 14px; padding-bottom: 18px; gap: 14px; }
       .col1 { gap: 14px; }
-    }
-    /* タブレット・スマホは縦に並べる */
-    @media (max-width: 1099px) {
-      .page {
-        grid-template-columns: 1fr;
-        grid-template-areas: "hero" "svc" "flow" "price" "form";
-      }
-      .col1 { display: contents; }
-      .page {
-        grid-template-rows: auto;
-        padding: 16px 16px 28px;
-      }
-      .tag { display: none; }
-    }
-    @media (max-width: 420px) {
-      .head-mail { font-size: 0; padding: 4px 10px; }
-      .head-mail::after { content: "お問い合わせ"; font-size: 13px; }
     }
 
     /* 見出し */
@@ -113,25 +92,24 @@
     .hero {
       position: relative; overflow: hidden;
       background: var(--blue); color: var(--white);
-      padding: 22px 22px 24px;
-      display: flex; flex-direction: column; justify-content: center;
+      padding: 20px 20px 18px;
+      display: flex; flex-direction: column;
     }
     .hero::before { /* 集中線 */
       content: ""; position: absolute; inset: -50%;
-      background: repeating-conic-gradient(from 0deg at 50% 50%,
+      background: repeating-conic-gradient(from 0deg at 70% 75%,
         rgba(255,255,255,.14) 0deg 4deg, transparent 4deg 12deg);
       pointer-events: none;
     }
     .hero > * { position: relative; }
-    .hero > .burst { position: absolute; }
     .caption-box {
       align-self: flex-start; background: var(--yellow); color: var(--ink);
       border: 3px solid var(--ink); padding: 0 10px; font-size: 15px;
-      transform: rotate(-2deg); margin-bottom: 12px;
+      transform: rotate(-2deg); margin-bottom: 10px;
     }
     .hero h1 {
       font-family: "Dela Gothic One", sans-serif; font-weight: 400;
-      font-size: clamp(26px, min(3.1vw, 5.4vh), 46px); line-height: 1.22; margin: 0 0 16px;
+      font-size: clamp(26px, min(3vw, 5vh), 44px); line-height: 1.22; margin: 0 0 14px;
       -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill;
       text-shadow: 4px 4px 0 var(--ink);
     }
@@ -139,30 +117,30 @@
     .bubble {
       position: relative; background: var(--white); color: var(--ink);
       border: var(--border); border-radius: 22px;
-      padding: 10px 16px; margin: 0 0 30px; font-size: 13.5px; line-height: 1.65;
+      padding: 9px 15px; margin: 0 0 24px; font-size: 13px; line-height: 1.65;
     }
     .bubble::before {
-      content: ""; position: absolute; left: 36px; bottom: -26px;
+      content: ""; position: absolute; right: 70px; bottom: -26px;
       width: 34px; height: 26px; background: var(--ink);
-      clip-path: polygon(0 0, 100% 0, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
     }
     .bubble::after {
-      content: ""; position: absolute; left: 40px; bottom: -19px;
+      content: ""; position: absolute; right: 74px; bottom: -19px;
       width: 24px; height: 19px; background: var(--white);
-      clip-path: polygon(0 0, 100% 0, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
     }
-    .burst {
-      right: 14px; bottom: 10px; width: 92px; height: 92px;
-      display: grid; place-items: center;
-      background: var(--red); color: var(--yellow);
-      clip-path: polygon(50% 0%, 61% 18%, 82% 8%, 79% 30%, 100% 33%, 85% 50%, 100% 67%, 79% 70%, 82% 92%, 61% 82%, 50% 100%, 39% 82%, 18% 92%, 21% 70%, 0% 67%, 15% 50%, 0% 33%, 21% 30%, 18% 8%, 39% 18%);
-      font-size: 23px; transform: rotate(-10deg); text-shadow: 2px 2px 0 var(--ink);
+    .hero-bottom {
+      flex: 1; min-height: 100px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;
     }
+    .hero-bottom .btn { margin-bottom: 4px; flex: none; }
+    .printer { height: 100%; max-height: 210px; width: auto; max-width: 62%; flex: 0 1 auto; }
+
     .btn {
       display: inline-block; align-self: flex-start;
       background: var(--yellow); color: var(--ink);
       font-family: "Dela Gothic One", sans-serif; font-weight: 400; font-size: 16px;
-      padding: 9px 22px; text-decoration: none; cursor: pointer;
+      padding: 9px 20px; text-decoration: none; cursor: pointer;
       border: var(--border); box-shadow: 4px 4px 0 var(--ink);
       transition: transform .08s, box-shadow .08s;
     }
@@ -174,49 +152,129 @@
     .flow { background: #e8f4ff; }
     .cells { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
     .svc .cells { flex: 1; }
-    .cell { background: var(--white); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 8px 12px; }
+    .cell { position: relative; background: var(--white); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 8px 12px; }
     .cell:nth-child(odd) { transform: rotate(-.6deg); }
     .cell:nth-child(even) { transform: rotate(.6deg); }
     .cell h3 { font-family: "Dela Gothic One", sans-serif; font-weight: 400; margin: 0 0 2px; font-size: 15px; display: flex; align-items: baseline; gap: 8px; }
     .cell p { margin: 0; font-size: 12.5px; line-height: 1.55; }
+    .ico { position: absolute; right: -12px; top: -16px; width: 38px; height: 38px; transform: rotate(8deg); filter: drop-shadow(2px 2px 0 #111); }
+    .cell:nth-child(odd) .ico { transform: rotate(-8deg); }
     .sfx { font-family: "Bangers", sans-serif; font-size: 20px; color: var(--red); text-shadow: 1.5px 1.5px 0 var(--ink); letter-spacing: .03em; }
     .step { background: var(--red); color: var(--white); border: 2px solid var(--ink); padding: 0 6px; font-size: 14px; line-height: 1.4; }
 
     /* ===== 料金 ===== */
-    .price { background: var(--yellow); text-align: center; padding: 14px 16px 16px; }
-    .price .ttl { margin-bottom: 6px; }
+    .price { background: var(--yellow); text-align: center; padding: 12px 16px 14px; flex: none; }
+    .price .ttl { margin-bottom: 4px; }
     .price .big {
-      font-family: "Dela Gothic One", sans-serif; font-size: 34px; line-height: 1.2; margin: 0 0 4px;
+      font-family: "Dela Gothic One", sans-serif; font-size: 32px; line-height: 1.2; margin: 0 0 4px;
       color: var(--red); text-shadow: 3px 3px 0 var(--ink); letter-spacing: .05em;
     }
-    .price p { margin: 0; font-weight: 800; font-size: 13px; }
+    .price p { margin: 0; font-weight: 800; font-size: 12.5px; }
 
     /* ===== フォーム ===== */
     .form-panel { display: flex; flex-direction: column; }
-    form { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    form { display: flex; flex-direction: column; gap: 10px; flex: 1; min-height: 0; }
     .row2 { display: grid; grid-template-columns: 1fr 1.25fr; gap: 10px; }
     label { font-weight: 800; display: block; margin-bottom: 3px; font-size: 13px; }
     label .req { background: var(--red); color: var(--white); font-size: 10px; padding: 0 5px; margin-left: 5px; vertical-align: 1px; border: 2px solid var(--ink); }
     input, select, textarea {
-      width: 100%; padding: 8px 10px; font-size: 15px; font-family: inherit; font-weight: 500;
+      width: 100%; padding: 8px 10px; font-size: 16px; font-family: inherit; font-weight: 500;
       background: var(--paper); color: var(--ink);
       border: 3px solid var(--ink); border-radius: 0;
     }
     input:focus, select:focus, textarea:focus { outline: none; box-shadow: 3px 3px 0 var(--blue); }
-    .grow { flex: 1; display: flex; flex-direction: column; }
-    textarea { flex: 1; min-height: 110px; resize: vertical; }
+    .grow { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    textarea { flex: 1; min-height: 90px; resize: none; }
     .note { font-size: 12px; margin: 0; line-height: 1.5; }
-    .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px 10px; flex-wrap: wrap; }
     .direct { margin: 0; font-weight: 800; font-size: 13px; }
     .direct a { display: inline-block; }
-    @media (max-width: 600px) { .cells { grid-template-columns: 1fr; } }
-    @media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
 
     footer { text-align: center; font-size: 12px; padding: 0 0 10px; }
     @media (min-width: 1100px) { footer { position: fixed; right: 20px; bottom: 4px; padding: 0; } }
+
+    /* ===== スマホ・タブレット：横スワイプでコマをめくる ===== */
+    @media (max-width: 1099px) {
+      html, body { height: 100%; }
+      body { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+      header .bar { height: 50px; padding: 0 14px; }
+      .logo { font-size: 26px; }
+      .tag, footer, .caption-box { display: none; }
+      .page {
+        flex: 1; min-height: 0; width: 100%; max-width: none; margin: 0; padding: 0; gap: 0;
+        display: flex; overflow-x: auto; overflow-y: hidden;
+        scroll-snap-type: x mandatory; scrollbar-width: none;
+      }
+      .page::-webkit-scrollbar { display: none; }
+      .page > * {
+        flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always;
+        margin: 12px 14px 14px; flex-basis: calc(100% - 28px);
+        overflow-y: auto; overscroll-behavior: contain;
+      }
+      .col1 { gap: 12px; overflow-y: auto; }
+      .col1 .hero { overflow: hidden; flex: 1 0 auto; }
+      .grow { flex: 1 0 auto; min-height: 120px; }
+      .hero { padding: 16px 16px 12px; }
+      .hero h1 { font-size: clamp(24px, 7.4vw, 36px); margin-bottom: 12px; }
+      .hero h1 br.pc { display: none; }
+      .bubble { font-size: 13px; margin-bottom: 16px; padding: 8px 13px; }
+      .hero-bottom { min-height: 120px; }
+      .printer { max-height: 230px; }
+      .price { padding: 10px 12px 12px; }
+      .price .big { font-size: 26px; }
+      .price p { font-size: 12px; }
+      .price p br { display: none; }
+      .svc .cells, .flow .cells { grid-template-columns: 1fr; gap: 10px; }
+      .flow { display: flex; flex-direction: column; }
+      .flow .cells { flex: 1; align-content: center; }
+      .svc .cells { align-content: center; }
+      .cell p { font-size: 13px; }
+      .tabs {
+        display: grid; grid-template-columns: repeat(4, 1fr); flex: none;
+        background: var(--ink); border-top: var(--border);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .tabs button {
+        all: unset; cursor: pointer; text-align: center; color: var(--white);
+        padding: 6px 2px 7px; line-height: 1.15; font-size: 17px;
+        font-family: "Bangers", sans-serif; letter-spacing: .05em;
+      }
+      .tabs button small { display: block; font-family: "M PLUS Rounded 1c", sans-serif; font-size: 10px; letter-spacing: 0; font-weight: 800; }
+      .tabs button[aria-current="true"] { background: var(--yellow); color: var(--ink); }
+      .swipe-hint {
+        display: block; position: fixed; right: 18px; bottom: 74px; z-index: 5;
+        background: var(--red); color: var(--white); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+        padding: 2px 10px; font-size: 16px; transform: rotate(-4deg);
+        animation: nudge 1.2s ease-in-out infinite; pointer-events: none; transition: opacity .3s;
+      }
+      .swipe-hint.hide { opacity: 0; }
+      @keyframes nudge { 50% { transform: rotate(-4deg) translateX(6px); } }
+    }
+    @media (min-width: 700px) and (max-width: 1099px) {
+      .page > * { flex-basis: calc(100% - 28px); }
+      .svc .cells, .flow .cells { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 420px) {
+      .head-mail { font-size: 0; padding: 4px 10px; }
+      .head-mail::after { content: "メールする"; font-size: 13px; }
+    }
+    @media (max-width: 340px) { .row2 { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .swipe-hint { animation: none; } }
   </style>
 </head>
 <body>
+
+<!-- ===== 使い回すイラスト部品 ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.3" fill="#111" opacity=".35"/>
+    </pattern>
+    <pattern id="dotsW" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.2" fill="#fff" opacity=".55"/>
+    </pattern>
+  </defs>
+</svg>
 
 <header>
   <div class="bar">
@@ -225,46 +283,122 @@
   </div>
 </header>
 
-<main class="page">
-  <div class="col1">
-  <!-- ヒーロー -->
-  <div class="box hero">
-    <div class="burst en">POW!</div>
-    <div class="caption-box en">3D PRINTING SERVICE</div>
-    <h1>アイデアを、<br><em>手に取れる</em><br>カタチに！</h1>
-    <p class="bubble">
-      試作品・交換部品・フィギュア・オリジナルグッズなど、3Dプリンターでの造形を<strong>1点から</strong>承ります。
-      データがなくても、イメージや手書きスケッチからご相談OK！
-    </p>
-    <a href="#contact" class="btn" onclick="document.getElementById('name').focus(); return false;">無料で相談する！</a>
-  </div>
+<main class="page" id="page">
+  <div class="col1" id="p-top" data-tab="0">
+    <!-- ヒーロー -->
+    <div class="box hero">
+      <div class="caption-box en">3D PRINTING SERVICE</div>
+      <h1>アイデアを、<br><em>手に取れる</em><br class="pc">カタチに！</h1>
+      <p class="bubble">
+        試作品・交換部品・フィギュア・オリジナルグッズなど、3Dプリンターでの造形を<strong>1点から</strong>承ります。
+        データがなくても、イメージや手書きスケッチからご相談OK！
+      </p>
+      <div class="hero-bottom">
+        <a href="#contact" class="btn js-go-contact">無料で相談する！</a>
 
-  <!-- 料金 -->
-  <section class="box price" id="price">
-    <h2 class="ttl en">PRICE<small>料金</small></h2>
-    <p class="big">要相談！</p>
-    <p>内容に合わせて個別にお見積りします。<br>サイズ・形状・素材・数量によって変わります。お見積りは無料です。</p>
-  </section>
+        <!-- イラスト：3Dプリンター -->
+        <svg class="printer" viewBox="0 0 220 220" role="img" aria-label="ロボットを造形中の3Dプリンターのイラスト">
+          <!-- 爆発マーク -->
+          <polygon points="178,4 186,22 206,14 200,34 218,42 200,52 210,70 190,66 184,86 172,70 154,80 156,60 138,54 156,42 148,24 168,28"
+                   fill="#e63946" stroke="#111" stroke-width="4" stroke-linejoin="round"/>
+          <text x="178" y="54" text-anchor="middle" font-family="Bangers, sans-serif" font-size="22" fill="#ffd60a" stroke="#111" stroke-width="1.2" transform="rotate(-8 178 48)">POW!</text>
+          <!-- フレーム -->
+          <rect x="22" y="40" width="16" height="150" fill="#e63946" stroke="#111" stroke-width="4"/>
+          <rect x="146" y="40" width="16" height="150" fill="#e63946" stroke="#111" stroke-width="4"/>
+          <rect x="22" y="30" width="140" height="16" fill="#e63946" stroke="#111" stroke-width="4"/>
+          <rect x="22" y="40" width="16" height="150" fill="url(#dots)"/>
+          <!-- 横レール -->
+          <rect x="30" y="70" width="124" height="9" fill="#ddd" stroke="#111" stroke-width="3.5"/>
+          <!-- プリントヘッド -->
+          <rect x="70" y="58" width="44" height="34" rx="3" fill="#ffd60a" stroke="#111" stroke-width="4"/>
+          <rect x="70" y="58" width="16" height="34" fill="url(#dots)"/>
+          <circle cx="100" cy="70" r="5" fill="#fff" stroke="#111" stroke-width="3"/>
+          <polygon points="84,92 100,92 92,106" fill="#e63946" stroke="#111" stroke-width="3.5" stroke-linejoin="round"/>
+          <!-- 溶けたフィラメント -->
+          <path d="M92 106 L92 112" stroke="#ff8a00" stroke-width="5" stroke-linecap="round"/>
+          <!-- 造形中のロボット -->
+          <g stroke="#111" stroke-width="3.5" stroke-linejoin="round">
+            <rect x="70" y="118" width="44" height="30" rx="5" fill="#fff"/>
+            <circle cx="84" cy="132" r="5" fill="#1d8fe1"/>
+            <circle cx="100" cy="132" r="5" fill="#1d8fe1"/>
+            <rect x="64" y="150" width="56" height="26" rx="3" fill="#fff"/>
+            <rect x="64" y="150" width="56" height="26" fill="url(#dots)" stroke="none"/>
+          </g>
+          <path d="M70 158 H120 M70 166 H120" stroke="#111" stroke-width="1.5" opacity=".6"/>
+          <!-- ベッド -->
+          <rect x="34" y="176" width="116" height="10" fill="#1d8fe1" stroke="#111" stroke-width="4"/>
+          <!-- 土台 -->
+          <rect x="10" y="186" width="164" height="26" rx="3" fill="#111"/>
+          <rect x="22" y="193" width="40" height="11" fill="#1d8fe1" stroke="#fff" stroke-width="2"/>
+          <circle cx="154" cy="199" r="5" fill="#e63946" stroke="#fff" stroke-width="2"/>
+          <!-- 動きの線・キラキラ -->
+          <path d="M52 64 L60 66 M50 80 L60 78 M124 64 L134 62 M124 82 L134 84" stroke="#111" stroke-width="3" stroke-linecap="round"/>
+          <path d="M132 112 l4 -10 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 z" fill="#ffd60a" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M44 116 l3 -7 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 z" fill="#fff" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
+          <text x="196" y="132" text-anchor="middle" font-family="Bangers, sans-serif" font-size="20" fill="#fff" stroke="#111" stroke-width="1.1" transform="rotate(10 196 126)">WHIRR!</text>
+        </svg>
+      </div>
+    </div>
 
+    <!-- 料金 -->
+    <section class="box price" id="price">
+      <h2 class="ttl en">PRICE<small>料金</small></h2>
+      <p class="big">要相談！</p>
+      <p>内容に合わせて個別にお見積りします。<br>サイズ・形状・素材・数量によって変わります。お見積りは無料です。</p>
+    </section>
   </div>
 
   <!-- できること -->
-  <section class="box svc" id="service">
+  <section class="box svc" id="service" data-tab="1">
     <h2 class="ttl en">WHAT WE DO<small>できること</small></h2>
     <p class="lead-s">個人の方から法人の方まで、お気軽にご相談ください。</p>
     <div class="cells">
-      <div class="cell"><h3><span class="sfx">ZAP!</span>試作・プロトタイプ</h3><p>製品開発の形状確認や、組み付けテスト用の試作品をスピーディーに。</p></div>
-      <div class="cell"><h3><span class="sfx">BAM!</span>交換部品・治具</h3><p>廃番になった部品の再現や、作業を楽にする治具・ホルダーの製作。</p></div>
-      <div class="cell"><h3><span class="sfx">WOW!</span>フィギュア・模型</h3><p>ホビー用途の造形、建築模型、ジオラマパーツなどの出力。</p></div>
-      <div class="cell"><h3><span class="sfx">BOOM!</span>3Dデータ作成</h3><p>図面・写真・スケッチから3Dモデリングを行い、そのまま出力まで対応。</p></div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><!-- 歯車 -->
+          <path d="M24 6l4 1 1 5 4 2 4-3 3 3-3 4 2 4 5 1 1 4-1 4-5 1-2 4 3 4-3 3-4-3-4 2-1 5-4 1-4-1-1-5-4-2-4 3-3-3 3-4-2-4-5-1-1-4 1-4 5-1 2-4-3-4 3-3 4 3 4-2 1-5z" fill="#ffd60a" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="7" fill="#fff" stroke="#111" stroke-width="3"/>
+        </svg>
+        <h3><span class="sfx">ZAP!</span>試作・プロトタイプ</h3><p>製品開発の形状確認や、組み付けテスト用の試作品をスピーディーに。</p>
+      </div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><!-- レンチ -->
+          <path d="M33 5a10 10 0 0 0-9 14L7 36a4 4 0 0 0 5 5l17-17a10 10 0 0 0 14-9l-6 6-6-2-2-6z" fill="#1d8fe1" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="10.5" cy="37.5" r="2" fill="#fff"/>
+        </svg>
+        <h3><span class="sfx">BAM!</span>交換部品・治具</h3><p>廃番になった部品の再現や、作業を楽にする治具・ホルダーの製作。</p>
+      </div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><!-- フィギュア -->
+          <g stroke="#111" stroke-width="3" stroke-linejoin="round">
+            <path d="M24 3v5"/><circle cx="24" cy="3.5" r="2.5" fill="#e63946"/>
+            <rect x="13" y="8" width="22" height="16" rx="4" fill="#fff"/>
+            <rect x="11" y="26" width="26" height="14" rx="3" fill="#e63946"/>
+            <path d="M6 28l5 2M42 28l-5 2" stroke-linecap="round"/>
+            <rect x="9" y="40" width="30" height="5" fill="#111"/>
+          </g>
+          <circle cx="19" cy="16" r="2.5" fill="#111"/><circle cx="29" cy="16" r="2.5" fill="#111"/>
+        </svg>
+        <h3><span class="sfx">WOW!</span>フィギュア・模型</h3><p>ホビー用途の造形、建築模型、ジオラマパーツなどの出力。</p>
+      </div>
+      <div class="cell">
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><!-- 3Dデータ（立方体） -->
+          <g stroke="#111" stroke-width="3" stroke-linejoin="round">
+            <path d="M24 5l17 9-17 9-17-9z" fill="#ffd60a"/>
+            <path d="M7 14v19l17 10V23z" fill="#1d8fe1"/>
+            <path d="M41 14v19L24 43V23z" fill="#e63946"/>
+          </g>
+          <path d="M7 14l17 9 17-9M24 23v20" stroke="#fff" stroke-width="1" stroke-dasharray="2 2" opacity=".8"/>
+        </svg>
+        <h3><span class="sfx">BOOM!</span>3Dデータ作成</h3><p>図面・写真・スケッチから3Dモデリングを行い、そのまま出力まで対応。</p>
+      </div>
     </div>
   </section>
 
   <!-- ご依頼の流れ -->
-  <section class="box flow" id="flow">
+  <section class="box flow" id="flow" data-tab="2">
     <h2 class="ttl en">HOW IT WORKS<small>ご依頼の流れ</small></h2>
     <div class="cells">
-      <div class="cell"><h3><span class="step en">STEP 1</span>お問い合わせ</h3><p>右のフォームから、作りたいものの内容をお送りください。</p></div>
+      <div class="cell"><h3><span class="step en">STEP 1</span>お問い合わせ</h3><p>フォームから、作りたいものの内容をお送りください。</p></div>
       <div class="cell"><h3><span class="step en">STEP 2</span>お見積り</h3><p>サイズ・素材・数量をもとに、料金と納期をご案内します。</p></div>
       <div class="cell"><h3><span class="step en">STEP 3</span>造形</h3><p>ご了承いただいた後、造形と仕上げを行います。</p></div>
       <div class="cell"><h3><span class="step en">STEP 4</span>お届け</h3><p>発送または手渡しでお届けします。</p></div>
@@ -272,7 +406,7 @@
   </section>
 
   <!-- お問い合わせ -->
-  <section class="box form-panel" id="contact">
+  <section class="box form-panel" id="contact" data-tab="3">
     <h2 class="ttl en">CONTACT<small>お問い合わせ</small></h2>
     <p class="lead-s">ご相談・お見積りは無料です！</p>
     <!-- 送信ボタンを押すと、入力内容が入ったメールソフトが開きます -->
@@ -310,6 +444,15 @@
   </section>
 </main>
 
+<!-- スマホ用：コマ切り替えタブ -->
+<nav class="tabs" aria-label="ページ切り替え">
+  <button type="button" data-go="0" aria-current="true">TOP<small>トップ・料金</small></button>
+  <button type="button" data-go="1">SERVICE<small>できること</small></button>
+  <button type="button" data-go="2">FLOW<small>ご依頼の流れ</small></button>
+  <button type="button" data-go="3">CONTACT<small>お問い合わせ</small></button>
+</nav>
+<div class="swipe-hint en" id="hint">SWIPE ▶</div>
+
 <footer><span class="en">© <span id="year"></span> PIPPI STUDIO</span></footer>
 
 <script>
@@ -329,6 +472,37 @@
       `${f.message.value}`;
     location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
+
+  // ===== スマホ：横スワイプのコマ切り替え =====
+  const page = document.getElementById("page");
+  const slides = [...page.querySelectorAll("[data-tab]")];
+  const tabs = [...document.querySelectorAll(".tabs button")];
+  const hint = document.getElementById("hint");
+  const isSwipe = () => matchMedia("(max-width: 1099px)").matches;
+
+  setTimeout(() => hint.classList.add("hide"), 4000);
+
+  function goTo(i) {
+    page.scrollTo({ left: slides[i].offsetLeft - parseFloat(getComputedStyle(slides[i]).marginLeft), behavior: "smooth" });
+  }
+  tabs.forEach((b) => b.addEventListener("click", () => goTo(+b.dataset.go)));
+
+  page.addEventListener("scroll", () => {
+    const i = Math.round(page.scrollLeft / page.clientWidth);
+    tabs.forEach((b, j) => b.setAttribute("aria-current", j === i ? "true" : "false"));
+    if (page.scrollLeft > 20) hint.classList.add("hide");
+  }, { passive: true });
+
+  // 「無料で相談する！」→ フォームへ
+  document.querySelectorAll(".js-go-contact").forEach((a) => a.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (isSwipe()) {
+      goTo(3);
+      setTimeout(() => document.getElementById("name").focus({ preventScroll: true }), 450);
+    } else {
+      document.getElementById("name").focus();
+    }
+  }));
 </script>
 </body>
 </html>
