@@ -19,10 +19,9 @@
       --blue: #1d8fe1;
       --white: #ffffff;
       --border: 4px solid var(--ink);
-      --shadow: 7px 7px 0 var(--ink);
+      --shadow: 6px 6px 0 var(--ink);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       color: var(--ink);
@@ -32,263 +31,286 @@
       background-size: 14px 14px;
       font-family: "M PLUS Rounded 1c", "Hiragino Sans", system-ui, sans-serif;
       font-weight: 500;
-      line-height: 1.8;
+      line-height: 1.6;
       overflow-x: hidden;
     }
     a { color: inherit; }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
     .en { font-family: "Bangers", "Dela Gothic One", sans-serif; letter-spacing: .05em; font-weight: 400; }
+    .jp { font-family: "Dela Gothic One", sans-serif; font-weight: 400; }
 
     /* ===== ヘッダー ===== */
     header {
-      position: sticky; top: 0; z-index: 10;
       background: var(--yellow);
       border-bottom: var(--border);
     }
-    header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-    .logo { font-size: 30px; text-decoration: none; text-shadow: 2px 2px 0 var(--white); }
-    .logo span { color: var(--red); }
-    nav a { text-decoration: none; margin-left: 18px; font-weight: 800; font-size: 14px; }
-    nav a:hover { color: var(--red); }
-    nav a.cta-link {
-      background: var(--red); color: var(--white); padding: 6px 14px;
-      border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+    header .bar {
+      max-width: 1400px; margin: 0 auto; padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 54px;
     }
-    nav a.cta-link:hover { color: var(--white); }
-    @media (max-width: 640px) { nav a:not(.cta-link) { display: none; } }
+    .logo { font-size: 30px; text-decoration: none; text-shadow: 2px 2px 0 var(--white); white-space: nowrap; }
+    .logo span { color: var(--red); }
+    .tag { background: var(--ink); color: var(--yellow); padding: 0 10px; font-size: 16px; margin-left: 12px; vertical-align: 4px; }
+    .head-mail { font-weight: 800; font-size: 14px; text-decoration: none; background: var(--red); color: var(--white); padding: 4px 12px; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); white-space: nowrap; }
+
+    /* ===== コマ割りレイアウト ===== */
+    .page {
+      max-width: 1400px; margin: 0 auto; padding: 18px 20px 24px;
+      display: grid; gap: 18px;
+      grid-template-columns: 1fr 1.3fr 1fr;
+      grid-template-areas:
+        "col1 svc  form"
+        "col1 flow form";
+      grid-template-rows: 1fr auto;
+    }
+    .box { background: var(--white); border: var(--border); box-shadow: var(--shadow); padding: 16px 18px; }
+    .col1  { grid-area: col1; display: flex; flex-direction: column; gap: 18px; min-height: 0; }
+    .hero  { grid-area: hero; flex: 1; }
+    .price { grid-area: price; }
+    .svc   { grid-area: svc; }
+    .flow  { grid-area: flow; }
+    .form-panel { grid-area: form; }
+
+    /* 1画面に収める（PC） */
+    @media (min-width: 1100px) {
+      body { height: 100vh; display: flex; flex-direction: column; }
+      .page { flex: 1; min-height: 0; width: 100%; max-height: 760px; margin: auto; }
+      .svc .cells { align-content: center; }
+    }
+    @media (min-width: 1100px) and (max-height: 780px) {
+      .caption-box { display: none; }
+      .page { padding-top: 14px; padding-bottom: 18px; gap: 14px; }
+      .col1 { gap: 14px; }
+    }
+    /* タブレット・スマホは縦に並べる */
+    @media (max-width: 1099px) {
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-areas: "hero" "svc" "flow" "price" "form";
+      }
+      .col1 { display: contents; }
+      .page {
+        grid-template-rows: auto;
+        padding: 16px 16px 28px;
+      }
+      .tag { display: none; }
+    }
+    @media (max-width: 420px) {
+      .head-mail { font-size: 0; padding: 4px 10px; }
+      .head-mail::after { content: "お問い合わせ"; font-size: 13px; }
+    }
+
+    /* 見出し */
+    .ttl {
+      display: inline-block; margin: 0 0 12px;
+      background: var(--ink); color: var(--yellow);
+      padding: 0 12px; font-size: 22px; line-height: 1.5;
+      transform: rotate(-1.5deg); box-shadow: 4px 4px 0 var(--red);
+    }
+    .ttl small { font-family: "Dela Gothic One", sans-serif; font-size: 12px; color: var(--white); margin-left: 8px; letter-spacing: 0; }
+    .lead-s { font-size: 13px; font-weight: 800; margin: -4px 0 10px; }
 
     /* ===== ヒーロー ===== */
-    .hero { padding-top: 56px; padding-bottom: 72px; }
-    .hero-panel {
-      position: relative;
-      background: var(--blue);
-      border: var(--border);
-      box-shadow: var(--shadow);
-      padding: 48px 32px 56px;
-      color: var(--white);
-      overflow: hidden;
+    .hero {
+      position: relative; overflow: hidden;
+      background: var(--blue); color: var(--white);
+      padding: 22px 22px 24px;
+      display: flex; flex-direction: column; justify-content: center;
     }
-    /* 集中線 */
-    .hero-panel::before {
+    .hero::before { /* 集中線 */
       content: ""; position: absolute; inset: -50%;
       background: repeating-conic-gradient(from 0deg at 50% 50%,
         rgba(255,255,255,.14) 0deg 4deg, transparent 4deg 12deg);
       pointer-events: none;
     }
-    .hero-panel > * { position: relative; }
+    .hero > * { position: relative; }
+    .hero > .burst { position: absolute; }
     .caption-box {
-      display: inline-block; background: var(--yellow); color: var(--ink);
-      border: 3px solid var(--ink); padding: 2px 12px; font-size: 18px;
-      transform: rotate(-2deg); margin-bottom: 20px;
+      align-self: flex-start; background: var(--yellow); color: var(--ink);
+      border: 3px solid var(--ink); padding: 0 10px; font-size: 15px;
+      transform: rotate(-2deg); margin-bottom: 12px;
     }
     .hero h1 {
       font-family: "Dela Gothic One", sans-serif; font-weight: 400;
-      font-size: clamp(34px, 7vw, 64px); line-height: 1.25; margin: 0 0 24px;
-      -webkit-text-stroke: 2px var(--ink);
-      paint-order: stroke fill;
-      text-shadow: 5px 5px 0 var(--ink);
+      font-size: clamp(26px, min(3.1vw, 5.4vh), 46px); line-height: 1.22; margin: 0 0 16px;
+      -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill;
+      text-shadow: 4px 4px 0 var(--ink);
     }
     .hero h1 em { font-style: normal; color: var(--yellow); }
     .bubble {
-      position: relative; display: block; max-width: 560px;
-      background: var(--white); color: var(--ink);
-      border: var(--border); border-radius: 28px;
-      padding: 18px 24px; margin: 0 0 40px; font-size: 16px;
-    }
-    .bubble::after {
-      content: ""; position: absolute; left: 48px; bottom: -24px;
-      width: 30px; height: 24px; background: var(--white);
-      border-left: 4px solid var(--ink);
-      clip-path: polygon(0 0, 100% 0, 0 100%);
+      position: relative; background: var(--white); color: var(--ink);
+      border: var(--border); border-radius: 22px;
+      padding: 10px 16px; margin: 0 0 30px; font-size: 13.5px; line-height: 1.65;
     }
     .bubble::before {
-      content: ""; position: absolute; left: 44px; bottom: -30px;
-      width: 40px; height: 30px; background: var(--ink);
+      content: ""; position: absolute; left: 36px; bottom: -26px;
+      width: 34px; height: 26px; background: var(--ink);
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+    .bubble::after {
+      content: ""; position: absolute; left: 40px; bottom: -19px;
+      width: 24px; height: 19px; background: var(--white);
       clip-path: polygon(0 0, 100% 0, 0 100%);
     }
     .burst {
-      position: absolute; right: 24px; top: 24px;
-      width: 150px; height: 150px; display: grid; place-items: center;
+      right: 14px; bottom: 10px; width: 92px; height: 92px;
+      display: grid; place-items: center;
       background: var(--red); color: var(--yellow);
       clip-path: polygon(50% 0%, 61% 18%, 82% 8%, 79% 30%, 100% 33%, 85% 50%, 100% 67%, 79% 70%, 82% 92%, 61% 82%, 50% 100%, 39% 82%, 18% 92%, 21% 70%, 0% 67%, 15% 50%, 0% 33%, 21% 30%, 18% 8%, 39% 18%);
-      font-size: 34px; transform: rotate(12deg);
-      text-shadow: 2px 2px 0 var(--ink);
+      font-size: 23px; transform: rotate(-10deg); text-shadow: 2px 2px 0 var(--ink);
     }
-    .hero-panel > .burst { position: absolute; }
-    @media (max-width: 640px) {
-      .hero-panel { padding: 36px 20px 44px; }
-      .burst { width: 92px; height: 92px; font-size: 22px; right: 8px; top: 8px; }
-    }
-
     .btn {
-      display: inline-block; background: var(--yellow); color: var(--ink);
-      font-family: "Dela Gothic One", sans-serif; font-weight: 400; font-size: 18px;
-      padding: 14px 30px; text-decoration: none; cursor: pointer;
-      border: var(--border); box-shadow: 5px 5px 0 var(--ink);
+      display: inline-block; align-self: flex-start;
+      background: var(--yellow); color: var(--ink);
+      font-family: "Dela Gothic One", sans-serif; font-weight: 400; font-size: 16px;
+      padding: 9px 22px; text-decoration: none; cursor: pointer;
+      border: var(--border); box-shadow: 4px 4px 0 var(--ink);
       transition: transform .08s, box-shadow .08s;
     }
-    .btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
-    .btn:active { transform: translate(4px,4px); box-shadow: 1px 1px 0 var(--ink); }
+    .btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+    .btn:active { transform: translate(3px,3px); box-shadow: 1px 1px 0 var(--ink); }
 
-    /* ===== セクション ===== */
-    section { padding: 40px 0 64px; }
-    .sec-title {
-      display: inline-block; margin: 0;
-      background: var(--ink); color: var(--yellow);
-      padding: 4px 18px; font-size: clamp(26px, 5vw, 36px);
-      transform: rotate(-1.5deg);
-      box-shadow: 5px 5px 0 var(--red);
-    }
-    .sec-title small { font-family: "Dela Gothic One", sans-serif; font-size: .5em; color: var(--white); margin-left: 10px; letter-spacing: 0; }
-    .sub { margin: 20px 0 28px; font-weight: 800; }
+    /* ===== できること・流れ ===== */
+    .svc { background: #fffbe0; display: flex; flex-direction: column; }
+    .flow { background: #e8f4ff; }
+    .cells { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+    .svc .cells { flex: 1; }
+    .cell { background: var(--white); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 8px 12px; }
+    .cell:nth-child(odd) { transform: rotate(-.6deg); }
+    .cell:nth-child(even) { transform: rotate(.6deg); }
+    .cell h3 { font-family: "Dela Gothic One", sans-serif; font-weight: 400; margin: 0 0 2px; font-size: 15px; display: flex; align-items: baseline; gap: 8px; }
+    .cell p { margin: 0; font-size: 12.5px; line-height: 1.55; }
+    .sfx { font-family: "Bangers", sans-serif; font-size: 20px; color: var(--red); text-shadow: 1.5px 1.5px 0 var(--ink); letter-spacing: .03em; }
+    .step { background: var(--red); color: var(--white); border: 2px solid var(--ink); padding: 0 6px; font-size: 14px; line-height: 1.4; }
 
-    /* コマ割り風グリッド */
-    .panels { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
-    .panel { background: var(--white); border: var(--border); box-shadow: var(--shadow); padding: 22px 20px; }
-    .panel:nth-child(4n+1) { transform: rotate(-1deg); }
-    .panel:nth-child(4n+2) { transform: rotate(.8deg); background: #fffbe0; }
-    .panel:nth-child(4n+3) { transform: rotate(-.6deg); }
-    .panel:nth-child(4n+4) { transform: rotate(1.1deg); background: #e8f4ff; }
-    .panel h3 { font-family: "Dela Gothic One", sans-serif; font-weight: 400; margin: 0 0 6px; font-size: 19px; }
-    .panel p { margin: 0; font-size: 14px; }
-    .sfx { font-family: "Bangers", sans-serif; font-size: 32px; line-height: 1; color: var(--red); text-shadow: 2px 2px 0 var(--ink); display: block; margin-bottom: 8px; }
-    .step { display: inline-block; background: var(--red); color: var(--white); border: 3px solid var(--ink); padding: 0 10px; font-size: 20px; margin-bottom: 8px; }
-
-    /* 料金 */
-    .price-box { background: var(--yellow); border: var(--border); box-shadow: var(--shadow); padding: 32px 24px; text-align: center; }
-    .price-box .big {
-      font-family: "Dela Gothic One", sans-serif; font-size: clamp(40px, 9vw, 64px); line-height: 1.2; margin: 0 0 12px;
+    /* ===== 料金 ===== */
+    .price { background: var(--yellow); text-align: center; padding: 14px 16px 16px; }
+    .price .ttl { margin-bottom: 6px; }
+    .price .big {
+      font-family: "Dela Gothic One", sans-serif; font-size: 34px; line-height: 1.2; margin: 0 0 4px;
       color: var(--red); text-shadow: 3px 3px 0 var(--ink); letter-spacing: .05em;
     }
-    .price-box p { margin: 0; font-weight: 800; }
+    .price p { margin: 0; font-weight: 800; font-size: 13px; }
 
-    /* フォーム */
-    .form-panel { background: var(--white); border: var(--border); box-shadow: var(--shadow); padding: 28px 22px; max-width: 680px; }
-    form { display: grid; gap: 18px; }
-    label { font-weight: 800; display: block; margin-bottom: 6px; }
-    label .req { background: var(--red); color: var(--white); font-size: 11px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; border: 2px solid var(--ink); }
+    /* ===== フォーム ===== */
+    .form-panel { display: flex; flex-direction: column; }
+    form { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .row2 { display: grid; grid-template-columns: 1fr 1.25fr; gap: 10px; }
+    label { font-weight: 800; display: block; margin-bottom: 3px; font-size: 13px; }
+    label .req { background: var(--red); color: var(--white); font-size: 10px; padding: 0 5px; margin-left: 5px; vertical-align: 1px; border: 2px solid var(--ink); }
     input, select, textarea {
-      width: 100%; padding: 12px 14px; font-size: 16px; font-family: inherit; font-weight: 500;
+      width: 100%; padding: 8px 10px; font-size: 15px; font-family: inherit; font-weight: 500;
       background: var(--paper); color: var(--ink);
       border: 3px solid var(--ink); border-radius: 0;
     }
-    input:focus, select:focus, textarea:focus { outline: none; box-shadow: 4px 4px 0 var(--blue); }
-    textarea { min-height: 150px; resize: vertical; }
-    .note { font-size: 13px; margin: 0; }
-    .direct { margin: 24px 0 0; font-weight: 800; }
+    input:focus, select:focus, textarea:focus { outline: none; box-shadow: 3px 3px 0 var(--blue); }
+    .grow { flex: 1; display: flex; flex-direction: column; }
+    textarea { flex: 1; min-height: 110px; resize: vertical; }
+    .note { font-size: 12px; margin: 0; line-height: 1.5; }
+    .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .direct { margin: 0; font-weight: 800; font-size: 13px; }
     .direct a { display: inline-block; }
+    @media (max-width: 600px) { .cells { grid-template-columns: 1fr; } }
+    @media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
 
-    footer { background: var(--ink); color: var(--yellow); padding: 24px 0; text-align: center; border-top: var(--border); }
-    footer .en { font-size: 22px; }
+    footer { text-align: center; font-size: 12px; padding: 0 0 10px; }
+    @media (min-width: 1100px) { footer { position: fixed; right: 20px; bottom: 4px; padding: 0; } }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="wrap">
-    <a href="#" class="logo en">PIPPI <span>STUDIO</span></a>
-    <nav>
-      <a href="#service">サービス</a>
-      <a href="#flow">ご依頼の流れ</a>
-      <a href="#price">料金</a>
-      <a href="#contact" class="cta-link">お問い合わせ</a>
-    </nav>
+  <div class="bar">
+    <a href="#" class="logo en">PIPPI <span>STUDIO</span><span class="tag en">3D PRINTING SERVICE</span></a>
+    <a href="mailto:hyusuke0509@gmail.com" class="head-mail">hyusuke0509@gmail.com</a>
   </div>
 </header>
 
-<main>
-  <div class="wrap hero">
-    <div class="hero-panel">
-      <div class="burst en">POW!</div>
-      <div class="caption-box en">3D PRINTING SERVICE</div>
-      <h1>アイデアを、<br><em>手に取れる</em><br>カタチに！</h1>
-      <p class="bubble">
-        試作品・交換部品・フィギュア・オリジナルグッズなど、3Dプリンターでの造形を<strong>1点から</strong>承ります。
-        データがなくても、イメージや手書きスケッチからご相談OK！
-      </p>
-      <a href="#contact" class="btn">無料で相談する！</a>
-    </div>
+<main class="page">
+  <div class="col1">
+  <!-- ヒーロー -->
+  <div class="box hero">
+    <div class="burst en">POW!</div>
+    <div class="caption-box en">3D PRINTING SERVICE</div>
+    <h1>アイデアを、<br><em>手に取れる</em><br>カタチに！</h1>
+    <p class="bubble">
+      試作品・交換部品・フィギュア・オリジナルグッズなど、3Dプリンターでの造形を<strong>1点から</strong>承ります。
+      データがなくても、イメージや手書きスケッチからご相談OK！
+    </p>
+    <a href="#contact" class="btn" onclick="document.getElementById('name').focus(); return false;">無料で相談する！</a>
   </div>
 
-  <section id="service">
-    <div class="wrap">
-      <h2 class="sec-title en">WHAT WE DO<small>できること</small></h2>
-      <p class="sub">個人の方から法人の方まで、お気軽にご相談ください。</p>
-      <div class="panels">
-        <div class="panel"><span class="sfx">ZAP!</span><h3>試作・プロトタイプ</h3><p>製品開発の形状確認や、組み付けテスト用の試作品をスピーディーに。</p></div>
-        <div class="panel"><span class="sfx">BAM!</span><h3>交換部品・治具</h3><p>廃番になった部品の再現や、作業を楽にする治具・ホルダーの製作。</p></div>
-        <div class="panel"><span class="sfx">WOW!</span><h3>フィギュア・模型</h3><p>ホビー用途の造形、建築模型、ジオラマパーツなどの出力。</p></div>
-        <div class="panel"><span class="sfx">BOOM!</span><h3>3Dデータ作成</h3><p>図面・写真・スケッチから3Dモデリングを行い、そのまま出力まで対応。</p></div>
-      </div>
+  <!-- 料金 -->
+  <section class="box price" id="price">
+    <h2 class="ttl en">PRICE<small>料金</small></h2>
+    <p class="big">要相談！</p>
+    <p>内容に合わせて個別にお見積りします。<br>サイズ・形状・素材・数量によって変わります。お見積りは無料です。</p>
+  </section>
+
+  </div>
+
+  <!-- できること -->
+  <section class="box svc" id="service">
+    <h2 class="ttl en">WHAT WE DO<small>できること</small></h2>
+    <p class="lead-s">個人の方から法人の方まで、お気軽にご相談ください。</p>
+    <div class="cells">
+      <div class="cell"><h3><span class="sfx">ZAP!</span>試作・プロトタイプ</h3><p>製品開発の形状確認や、組み付けテスト用の試作品をスピーディーに。</p></div>
+      <div class="cell"><h3><span class="sfx">BAM!</span>交換部品・治具</h3><p>廃番になった部品の再現や、作業を楽にする治具・ホルダーの製作。</p></div>
+      <div class="cell"><h3><span class="sfx">WOW!</span>フィギュア・模型</h3><p>ホビー用途の造形、建築模型、ジオラマパーツなどの出力。</p></div>
+      <div class="cell"><h3><span class="sfx">BOOM!</span>3Dデータ作成</h3><p>図面・写真・スケッチから3Dモデリングを行い、そのまま出力まで対応。</p></div>
     </div>
   </section>
 
-  <section id="flow">
-    <div class="wrap">
-      <h2 class="sec-title en">HOW IT WORKS<small>ご依頼の流れ</small></h2>
-      <p class="sub">お問い合わせからお届けまで、4ステップ！</p>
-      <div class="panels">
-        <div class="panel"><span class="step en">STEP 1</span><h3>お問い合わせ</h3><p>下のフォームから、作りたいものの内容をお送りください。</p></div>
-        <div class="panel"><span class="step en">STEP 2</span><h3>お見積り</h3><p>サイズ・素材・数量をもとに、料金と納期をご案内します。</p></div>
-        <div class="panel"><span class="step en">STEP 3</span><h3>造形</h3><p>ご了承いただいた後、造形と仕上げを行います。</p></div>
-        <div class="panel"><span class="step en">STEP 4</span><h3>お届け</h3><p>発送または手渡しでお届けします。</p></div>
-      </div>
+  <!-- ご依頼の流れ -->
+  <section class="box flow" id="flow">
+    <h2 class="ttl en">HOW IT WORKS<small>ご依頼の流れ</small></h2>
+    <div class="cells">
+      <div class="cell"><h3><span class="step en">STEP 1</span>お問い合わせ</h3><p>右のフォームから、作りたいものの内容をお送りください。</p></div>
+      <div class="cell"><h3><span class="step en">STEP 2</span>お見積り</h3><p>サイズ・素材・数量をもとに、料金と納期をご案内します。</p></div>
+      <div class="cell"><h3><span class="step en">STEP 3</span>造形</h3><p>ご了承いただいた後、造形と仕上げを行います。</p></div>
+      <div class="cell"><h3><span class="step en">STEP 4</span>お届け</h3><p>発送または手渡しでお届けします。</p></div>
     </div>
   </section>
 
-  <section id="price">
-    <div class="wrap">
-      <h2 class="sec-title en">PRICE<small>料金</small></h2>
-      <p class="sub">内容に合わせて、個別にお見積りします。</p>
-      <div class="price-box">
-        <p class="big">要相談！</p>
-        <p>サイズ・形状・素材・数量によって変わります。<br>お見積りは無料なので、まずはお気軽にお問い合わせください。</p>
+  <!-- お問い合わせ -->
+  <section class="box form-panel" id="contact">
+    <h2 class="ttl en">CONTACT<small>お問い合わせ</small></h2>
+    <p class="lead-s">ご相談・お見積りは無料です！</p>
+    <!-- 送信ボタンを押すと、入力内容が入ったメールソフトが開きます -->
+    <form id="contact-form">
+      <div class="row2">
+        <div>
+          <label for="name">お名前<span class="req">必須</span></label>
+          <input id="name" name="name" required autocomplete="name">
+        </div>
+        <div>
+          <label for="type">ご相談内容</label>
+          <select id="type" name="type">
+            <option>造形・出力のご依頼</option>
+            <option>3Dデータ作成のご依頼</option>
+            <option>お見積りのみ</option>
+            <option>その他</option>
+          </select>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap">
-      <h2 class="sec-title en">CONTACT<small>お問い合わせ</small></h2>
-      <p class="sub">ご相談・お見積りは無料です！</p>
-
-      <div class="form-panel">
-        <!-- 送信ボタンを押すと、入力内容が入ったメールソフトが開きます -->
-        <form id="contact-form">
-          <div>
-            <label for="name">お名前<span class="req">必須</span></label>
-            <input id="name" name="name" required autocomplete="name">
-          </div>
-          <div>
-            <label for="email">メールアドレス<span class="req">必須</span></label>
-            <input id="email" name="email" type="email" required autocomplete="email">
-          </div>
-          <div>
-            <label for="type">ご相談内容</label>
-            <select id="type" name="type">
-              <option>造形・出力のご依頼</option>
-              <option>3Dデータ作成のご依頼</option>
-              <option>お見積りのみ</option>
-              <option>その他</option>
-            </select>
-          </div>
-          <div>
-            <label for="message">詳細<span class="req">必須</span></label>
-            <textarea id="message" name="message" required
-              placeholder="作りたいもの、サイズ、数量、ご希望の納期などをご記入ください。"></textarea>
-          </div>
-          <p class="note">※ 3Dデータや参考画像がある場合は、開いたメールに添付してお送りください。</p>
-          <div><button type="submit" class="btn">送信する！</button></div>
-        </form>
+      <div>
+        <label for="email">メールアドレス<span class="req">必須</span></label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="grow">
+        <label for="message">詳細<span class="req">必須</span></label>
+        <textarea id="message" name="message" required
+          placeholder="作りたいもの、サイズ、数量、ご希望の納期などをご記入ください。"></textarea>
+      </div>
+      <p class="note">※ 3Dデータや参考画像がある場合は、開いたメールに添付してお送りください。</p>
+      <div class="form-foot">
+        <button type="submit" class="btn">送信する！</button>
         <p class="direct">メールで直接：<a href="mailto:hyusuke0509@gmail.com">hyusuke0509@gmail.com</a></p>
       </div>
-    </div>
+    </form>
   </section>
 </main>
 
-<footer>
-  <div class="wrap"><span class="en">© <span id="year"></span> PIPPI STUDIO</span></div>
-</footer>
+<footer><span class="en">© <span id="year"></span> PIPPI STUDIO</span></footer>
 
 <script>
   // お問い合わせの送信先
